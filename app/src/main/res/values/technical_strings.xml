@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="provider_read_permission" translatable="false">com.signanthealth.contentprovider.READ</string>
+    <string name="provider_authority" translatable="false">com.signanthealth.contentprovider.UserProvider</string>
+    <string name="provider_table_user" translatable="false">user</string>
+    <string name="provider_table_users" translatable="false">users</string>
+    <string name="provider_table_users_col" translatable="false">token</string>
+</resources>
