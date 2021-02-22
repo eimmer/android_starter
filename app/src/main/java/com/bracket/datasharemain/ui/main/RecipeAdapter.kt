@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.bracket.datasharemain.R
-import com.bracket.datasharemain.network.model.RecipeInformation
+import com.bracket.datasharemain.data.model.RecipeInformation
 import com.squareup.picasso.Picasso
 
 class RecipeAdapter(

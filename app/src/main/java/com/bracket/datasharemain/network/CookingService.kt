@@ -1,7 +1,7 @@
 package com.bracket.datasharemain.network
 
-import com.bracket.datasharemain.network.model.RandomRecipeResult
-import com.bracket.datasharemain.network.model.RecipeInformation
+import com.bracket.datasharemain.data.model.RandomRecipeResult
+import com.bracket.datasharemain.data.model.RecipeInformation
 import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit

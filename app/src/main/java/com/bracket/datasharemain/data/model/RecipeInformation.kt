@@ -1,4 +1,4 @@
-package com.bracket.datasharemain.network.model
+package com.bracket.datasharemain.data.model
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

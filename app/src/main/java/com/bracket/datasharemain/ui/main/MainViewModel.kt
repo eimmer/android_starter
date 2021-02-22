@@ -2,7 +2,7 @@ package com.bracket.datasharemain.ui.main
 
 import androidx.lifecycle.*
 import com.bracket.datasharemain.network.CookingService
-import com.bracket.datasharemain.network.model.RecipeInformation
+import com.bracket.datasharemain.data.model.RecipeInformation
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.lang.IllegalStateException

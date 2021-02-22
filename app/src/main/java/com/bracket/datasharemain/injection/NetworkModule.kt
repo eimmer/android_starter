@@ -1,6 +1,5 @@
 package com.bracket.datasharemain.injection
 
-import com.bracket.datasharemain.data.UserData
 import com.bracket.datasharemain.network.CookingService
 import com.bracket.datasharemain.network.ServiceApiInterceptor
 import dagger.Module

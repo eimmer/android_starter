@@ -4,7 +4,7 @@ import com.bracket.datasharemain.ui.main.MainFragment
 import dagger.Component
 import javax.inject.Singleton
 
-@Component(modules = [UserDataModule::class, NetworkModule::class, TrialGuideProviderModule::class])
+@Component(modules = [NetworkModule::class, ApplicationModule::class])
 @Singleton
 interface UserDataComponent {
     fun inject(fragment: MainFragment)

@@ -31,6 +31,6 @@
         tools:layout="@layout/recipe_detail_fragment" >
         <argument
             android:name="recipeInfo"
-            app:argType="com.bracket.datasharemain.network.model.RecipeInformation" />
+            app:argType="com.bracket.datasharemain.data.model.RecipeInformation" />
     </fragment>
 </navigation>

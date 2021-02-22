@@ -8,12 +8,11 @@ import com.bracket.datasharemain.injection.UserDataComponent
 class MainApplication : Application() {
 
     companion object {
-        lateinit var dataProvider:UserDataComponent
+        lateinit var dataProvider: UserDataComponent
     }
 
     override fun onCreate() {
         super.onCreate()
-
         dataProvider = DaggerUserDataComponent.builder().applicationModule(ApplicationModule(this)).build()
     }
 }
