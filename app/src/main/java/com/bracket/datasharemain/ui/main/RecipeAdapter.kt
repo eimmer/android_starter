@@ -1,10 +1,13 @@
 package com.bracket.datasharemain.ui.main
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.bracket.datasharemain.R
@@ -35,13 +38,23 @@ class RecipeAdapter(
         RecyclerView.ViewHolder(view) {
 
         fun bind(info: RecipeInformation) {
+
             itemView.findViewById<TextView>(R.id.recipe_title).text = info.title
+
+
+            val imageView = itemView.findViewById<ImageView>(R.id.recipe_image)
+            imageView.transitionName = "${info.title}_hero"
+
             Picasso.with(itemView.context)
                 .load(info.image)
                 .resize(targetWidth, targetWidth / 2)
-                .into(itemView.findViewById<ImageView>(R.id.recipe_image))
+                .into(imageView)
+
+
             itemView.setOnClickListener {
-                viewModel.newEvent(RecipeSelectedEvent(info))
+                val extras = FragmentNavigatorExtras(imageView to "hero_image")
+                val action = MainFragmentDirections.actionMainFragmentToRecipeDetailFragment(info)
+                itemView.findNavController().navigate(action, extras)
             }
         }
     }

@@ -13,7 +13,7 @@
             android:id="@+id/action_open_mainFragment"
             app:destination="@id/mainFragment"
             app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
+            app:exitAnim="@anim/fragment_fade_exit"
             app:popUpTo="@id/nav_graph" />
     </fragment>
     <fragment
@@ -24,7 +24,11 @@
         <action
             android:id="@+id/action_mainFragment_to_recipeDetailFragment"
             app:destination="@id/recipeDetailFragment"
-            app:launchSingleTop="false" />
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:launchSingleTop="false"
+            app:popEnterAnim="@anim/fragment_fade_enter"
+            app:popExitAnim="@android:anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/recipeDetailFragment"
