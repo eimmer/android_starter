@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.bracket.datasharemain.R
 import com.bracket.datasharemain.data.model.RecipeInformation
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
 class RecipeAdapter(
@@ -38,23 +39,36 @@ class RecipeAdapter(
 
         fun bind(info: RecipeInformation) {
 
-            itemView.findViewById<TextView>(R.id.recipe_title).text = info.title
-
+            val titleView = itemView.findViewById<TextView>(R.id.recipe_title)
+            titleView.text = info.title
 
             val imageView = itemView.findViewById<ImageView>(R.id.recipe_image)
             imageView.transitionName = "${info.title}_hero"
 
+            itemView.setOnClickListener {
+                val action =
+                    MainFragmentDirections.actionMainFragmentToRecipeDetailFragment(info)
+                itemView.findNavController().navigate(action)
+            }
+
             Picasso.with(itemView.context)
                 .load(info.image)
                 .resize(targetWidth, targetWidth / 2)
-                .into(imageView)
+                .into(imageView, object : Callback {
+                    override fun onSuccess() {
+                        itemView.setOnClickListener {
+                            val extras = FragmentNavigatorExtras(imageView to "hero_image")
+                            val action =
+                                MainFragmentDirections.actionMainFragmentToRecipeDetailFragment(info)
+                            itemView.findNavController().navigate(action, extras)
+                        }
+                    }
 
+                    override fun onError() {
+                        // If image loads in error, use default navigation with no animation.
+                    }
+                })
 
-            itemView.setOnClickListener {
-                val extras = FragmentNavigatorExtras(imageView to "hero_image")
-                val action = MainFragmentDirections.actionMainFragmentToRecipeDetailFragment(info)
-                itemView.findNavController().navigate(action, extras)
-            }
         }
     }
 }
