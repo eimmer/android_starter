@@ -2,6 +2,7 @@ package com.bracket.datasharemain.ui.recipe_details
 
 import android.graphics.Point
 import android.os.Bundle
+import android.text.Html
 import android.view.Display
 import android.view.LayoutInflater
 import android.view.View
@@ -53,7 +54,7 @@ class RecipeDetailFragment : Fragment() {
             .into(heroImageView)
 
         recipe_name.text = args.recipeInfo.title
-        recipe_instructions.text = args.recipeInfo.summary
+        recipe_instructions.text = Html.fromHtml(args.recipeInfo.summary)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
