@@ -1,6 +1,7 @@
 package com.bracket.datasharemain.ui.recipe_details
 
 import android.graphics.Point
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.Html
 import android.view.Display
@@ -8,7 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.core.view.ViewCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
@@ -55,11 +56,20 @@ class RecipeDetailFragment : Fragment() {
 
         recipe_name.text = args.recipeInfo.title
         recipe_instructions.text = Html.fromHtml(args.recipeInfo.summary)
+
+        favorite_button.setOnClickListener {
+            viewModel.markAsFavorite()
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(RecipeDetailViewModel::class.java)
+        viewModel.isRecipeFavorite.observe(viewLifecycleOwner, {
+            val resourceId = if(it) R.drawable.ic_baseline_favorite_24 else R.drawable.ic_baseline_favorite_border_24
+            val drawable = ResourcesCompat.getDrawable(resources, resourceId, null)
+            favorite_button.setImageDrawable(drawable)
+        })
     }
 
 
