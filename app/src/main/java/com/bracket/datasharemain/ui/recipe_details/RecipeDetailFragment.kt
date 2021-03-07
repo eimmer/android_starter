@@ -1,8 +1,10 @@
 package com.bracket.datasharemain.ui.recipe_details
 
 import android.graphics.Point
+import android.os.Build
 import android.os.Bundle
 import android.text.Html
+import android.text.Html.FROM_HTML_MODE_LEGACY
 import android.view.Display
 import android.view.LayoutInflater
 import android.view.View
@@ -46,24 +48,6 @@ class RecipeDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val heroImageView = view.findViewById<ImageView>(R.id.recipe_image)
-
-        val display: Display = view.display
-        val size = Point()
-        display.getSize(size)
-        val width: Int = size.x
-
-        val args: RecipeDetailFragmentArgs by navArgs()
-        Picasso.with(context)
-            .load(args.recipeInfo.image)
-            .resize(width, width / 2)
-            .into(heroImageView)
-
-
-        recipe_name.text = args.recipeInfo.title
-        recipe_instructions.text = Html.fromHtml(args.recipeInfo.summary)
-
         favorite_button.setOnClickListener {
             viewModel.markAsFavorite()
         }
@@ -73,7 +57,12 @@ class RecipeDetailFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         val args: RecipeDetailFragmentArgs by navArgs()
-        val recipe = Recipe(args.recipeInfo.id, args.recipeInfo.title, args.recipeInfo.summary)
+        val recipe = Recipe(
+            args.recipeInfo.id,
+            args.recipeInfo.title,
+            args.recipeInfo.summary,
+            args.recipeInfo.image
+        )
 
         viewModel = ViewModelProvider(
             this,
@@ -81,12 +70,55 @@ class RecipeDetailFragment : Fragment() {
         ).get(RecipeDetailViewModel::class.java)
 
 
-        viewModel.isRecipeFavorite.observe(viewLifecycleOwner, {
-            val resourceId =
-                if (it) R.drawable.ic_baseline_favorite_24 else R.drawable.ic_baseline_favorite_border_24
-            val drawable = ResourcesCompat.getDrawable(resources, resourceId, null)
-            favorite_button.setImageDrawable(drawable)
-        })
+        view?.let { v ->
+            viewModel.liveRecipe.observe(viewLifecycleOwner, { handleRecipeDisplay(it, v) })
+        }
+        viewModel.isRecipeFavorite.observe(viewLifecycleOwner, { handleFavorite(it) })
     }
 
+    private fun handleFavorite(isFavorite: Boolean) {
+        val resourceId =
+            if (isFavorite) R.drawable.ic_baseline_favorite_24 else R.drawable.ic_baseline_favorite_border_24
+        val drawable = ResourcesCompat.getDrawable(resources, resourceId, null)
+        favorite_button.setImageDrawable(drawable)
+    }
+
+    private fun handleRecipeDisplay(recipe: Recipe, view: View) {
+        setupHeroWidget(view, recipe.imageUrl)
+        setupTitle(recipe.title)
+        setupSummary(recipe.summary)
+    }
+
+    private fun setupSummary(summary: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            recipe_summary.text = Html.fromHtml(summary, FROM_HTML_MODE_LEGACY)
+        } else {
+            @Suppress("DEPRECATION")
+            recipe_summary.text = Html.fromHtml(summary)
+        }
+    }
+
+    private fun setupTitle(title: String) {
+        recipe_name.text = title
+    }
+
+    private fun setupHeroWidget(view: View, url: String?) {
+        val heroImageView = view.findViewById<ImageView>(R.id.recipe_image)
+
+        if (url == null) {
+            heroImageView.visibility = View.GONE
+
+        } else {
+
+            val display: Display = view.display
+            val size = Point()
+            display.getSize(size)
+            val width: Int = size.x
+
+            Picasso.with(context)
+                .load(url)
+                .resize(width, width / 2)
+                .into(heroImageView)
+        }
+    }
 }

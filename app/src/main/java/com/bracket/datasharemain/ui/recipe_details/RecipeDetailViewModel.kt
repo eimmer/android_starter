@@ -16,6 +16,9 @@ class RecipeDetailViewModel(
     private val announceFavorite = MutableLiveData(false)
     val isRecipeFavorite: LiveData<Boolean> = announceFavorite
 
+    private val announceRecipe = MutableLiveData(recipe)
+    val liveRecipe: LiveData<Recipe> = announceRecipe
+
     fun markAsFavorite() {
         isFavorite = !isFavorite
         announceFavorite.value = isFavorite
