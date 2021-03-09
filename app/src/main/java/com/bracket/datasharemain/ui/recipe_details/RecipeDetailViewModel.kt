@@ -3,11 +3,12 @@ package com.bracket.datasharemain.ui.recipe_details
 import androidx.lifecycle.*
 import com.bracket.datasharemain.data.RecipePersistence
 import com.bracket.datasharemain.data.entities.Recipe
+import com.bracket.datasharemain.data.model.NormalRecipe
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class RecipeDetailViewModel(
-    private val recipe: Recipe,
+    private val recipe: NormalRecipe,
     private val recipePersistence: RecipePersistence
 ) : ViewModel() {
 
@@ -17,7 +18,7 @@ class RecipeDetailViewModel(
     val isRecipeFavorite: LiveData<Boolean> = announceFavorite
 
     private val announceRecipe = MutableLiveData(recipe)
-    val liveRecipe: LiveData<Recipe> = announceRecipe
+    val liveRecipe: LiveData<NormalRecipe> = announceRecipe
 
     fun markAsFavorite() {
         isFavorite = !isFavorite
@@ -39,7 +40,7 @@ class RecipeDetailViewModel(
         }
     }
 
-    class Factory(private val recipe: Recipe, private val recipePersistence: RecipePersistence) :
+    class Factory(private val recipe: NormalRecipe, private val recipePersistence: RecipePersistence) :
         ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")

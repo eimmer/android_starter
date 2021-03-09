@@ -14,7 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bracket.datasharemain.MainApplication.Companion.dataProvider
 import com.bracket.datasharemain.R
+import com.bracket.datasharemain.data.model.NormalRecipe
 import com.bracket.datasharemain.data.model.RecipeInformation
+import com.bracket.datasharemain.data.model.toNormalRecipe
+import com.bracket.datasharemain.data.model.toNormalRecipeList
 import com.bracket.datasharemain.network.CookingService
 import kotlinx.android.synthetic.main.main_fragment.*
 import javax.inject.Inject
@@ -53,21 +56,26 @@ class MainFragment : Fragment() {
 
         recipe_list.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
 
-        val width = getImageWidth(view)
-        viewModel.recipes.observe(viewLifecycleOwner, { displayRecipeList(it, width) })
+        viewModel.recipes.observe(viewLifecycleOwner, { displayRecipeList(it) })
         viewModel.selectedRecipe.observe(viewLifecycleOwner, { info -> gotoRecipeDetails(info) })
-    }
 
-    private fun gotoRecipeDetails(recipe: RecipeInformation?) {
-        recipe?.let {
-            val action = MainFragmentDirections.actionMainFragmentToRecipeDetailFragment(it)
+        favorites.setOnClickListener {
+            val action = MainFragmentDirections.actionMainFragmentToFavoriteRecipesFragment()
             findNavController().navigate(action)
         }
     }
 
-    private fun displayRecipeList(recipes: List<RecipeInformation>, width: Int) {
+    private fun gotoRecipeDetails(recipe: NormalRecipe?) {
+        recipe?.let {
+            val action =
+                MainFragmentDirections.actionMainFragmentToRecipeDetailFragment(it)
+            findNavController().navigate(action)
+        }
+    }
+
+    private fun displayRecipeList(recipes: List<NormalRecipe>) {
         loading_spinner.visibility = View.GONE
-        recipe_list.adapter = RecipeAdapter(recipes, width, viewModel)
+        recipe_list.adapter = RecipeAdapter(recipes, getImageWidth(view!!))
     }
 
     private fun getImageWidth(view: View): Int {

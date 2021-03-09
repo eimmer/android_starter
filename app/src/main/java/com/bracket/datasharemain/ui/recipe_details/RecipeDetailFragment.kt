@@ -18,7 +18,7 @@ import androidx.transition.TransitionInflater
 import com.bracket.datasharemain.MainApplication.Companion.dataProvider
 import com.bracket.datasharemain.R
 import com.bracket.datasharemain.data.RecipePersistence
-import com.bracket.datasharemain.data.entities.Recipe
+import com.bracket.datasharemain.data.model.NormalRecipe
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.recipe_detail_fragment.*
 import javax.inject.Inject
@@ -57,11 +57,11 @@ class RecipeDetailFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         val args: RecipeDetailFragmentArgs by navArgs()
-        val recipe = Recipe(
+        val recipe = NormalRecipe(
             args.recipeInfo.id,
             args.recipeInfo.title,
             args.recipeInfo.summary,
-            args.recipeInfo.image
+            args.recipeInfo.imageUrl
         )
 
         viewModel = ViewModelProvider(
@@ -83,7 +83,7 @@ class RecipeDetailFragment : Fragment() {
         favorite_button.setImageDrawable(drawable)
     }
 
-    private fun handleRecipeDisplay(recipe: Recipe, view: View) {
+    private fun handleRecipeDisplay(recipe: NormalRecipe, view: View) {
         setupHeroWidget(view, recipe.imageUrl)
         setupTitle(recipe.title)
         setupSummary(recipe.summary)

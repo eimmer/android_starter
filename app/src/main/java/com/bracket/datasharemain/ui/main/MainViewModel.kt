@@ -1,6 +1,7 @@
 package com.bracket.datasharemain.ui.main
 
 import androidx.lifecycle.*
+import com.bracket.datasharemain.data.model.NormalRecipe
 import com.bracket.datasharemain.network.CookingService
 import com.bracket.datasharemain.data.model.RecipeInformation
 import kotlinx.coroutines.Dispatchers
@@ -9,15 +10,15 @@ import java.lang.IllegalStateException
 
 abstract class MainViewEvent
 
-class RecipeSelectedEvent(val recipeInformation: RecipeInformation) : MainViewEvent()
+class RecipeSelectedEvent(val recipeInformation: NormalRecipe) : MainViewEvent()
 
 class MainViewModel(private val cookingService: CookingService) : ViewModel() {
 
-    private val mutableRecipeList = MutableLiveData<List<RecipeInformation>>()
-    val recipes: LiveData<List<RecipeInformation>> = mutableRecipeList
+    private val mutableRecipeList = MutableLiveData<List<NormalRecipe>>()
+    val recipes: LiveData<List<NormalRecipe>> = mutableRecipeList
 
-    private val announceSelectedRecipe = MutableLiveData<RecipeInformation?>()
-    val selectedRecipe:LiveData<RecipeInformation?> = announceSelectedRecipe
+    private val announceSelectedRecipe = MutableLiveData<NormalRecipe?>()
+    val selectedRecipe:LiveData<NormalRecipe?> = announceSelectedRecipe
 
     init {
         viewModelScope.launch(Dispatchers.Default) {

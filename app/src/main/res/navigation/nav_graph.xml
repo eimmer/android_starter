@@ -14,6 +14,7 @@
             app:destination="@id/mainFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/fragment_fade_exit"
+            app:launchSingleTop="true"
             app:popUpTo="@id/nav_graph" />
     </fragment>
     <fragment
@@ -29,6 +30,14 @@
             app:launchSingleTop="false"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@anim/fragment_fade_exit" />
+        <action
+            android:id="@+id/action_mainFragment_to_favoriteRecipesFragment"
+            app:destination="@id/favoriteRecipesFragment"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:launchSingleTop="false"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@anim/fragment_fade_exit" />
     </fragment>
     <fragment
         android:id="@+id/recipeDetailFragment"
@@ -37,6 +46,11 @@
         tools:layout="@layout/recipe_detail_fragment" >
         <argument
             android:name="recipeInfo"
-            app:argType="com.bracket.datasharemain.data.model.RecipeInformation" />
+            app:argType="com.bracket.datasharemain.data.model.NormalRecipe" />
     </fragment>
+    <fragment
+        android:id="@+id/favoriteRecipesFragment"
+        android:name="com.bracket.datasharemain.ui.favorites.FavoriteRecipesFragment"
+        android:label="favorite_recipes_fragment"
+        tools:layout="@layout/favorite_recipes_fragment" />
 </navigation>

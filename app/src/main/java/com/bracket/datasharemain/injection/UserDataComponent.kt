@@ -1,5 +1,6 @@
 package com.bracket.datasharemain.injection
 
+import com.bracket.datasharemain.ui.favorites.FavoriteRecipesFragment
 import com.bracket.datasharemain.ui.main.MainFragment
 import com.bracket.datasharemain.ui.recipe_details.RecipeDetailFragment
 import dagger.Component
@@ -11,4 +12,6 @@ interface UserDataComponent {
     fun inject(fragment: MainFragment)
 
     fun inject(fragment: RecipeDetailFragment)
+
+    fun inject(fragment: FavoriteRecipesFragment)
 }

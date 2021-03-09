@@ -9,21 +9,27 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
+import com.bracket.datasharemain.BuildConfig
 import com.bracket.datasharemain.R
-import com.bracket.datasharemain.data.model.RecipeInformation
+import com.bracket.datasharemain.data.model.NormalRecipe
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
 class RecipeAdapter(
-    private val recipes: List<RecipeInformation>,
-    private val targetWidth: Int,
-    private val viewModel: MainViewModel
+    private val recipes: List<NormalRecipe>,
+    private val width:Int
 ) : Adapter<RecipeAdapter.RecipeViewHolder>() {
+
+    init {
+        if (BuildConfig.DEBUG && width <= 0) {
+            error("width parameter is invalid with the following value: $width")
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.template_recipe_overview, parent, false)
-        return RecipeViewHolder(view, targetWidth)
+        return RecipeViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
@@ -34,10 +40,10 @@ class RecipeAdapter(
         return recipes.size
     }
 
-    inner class RecipeViewHolder(view: View, private val targetWidth: Int) :
+    inner class RecipeViewHolder(view: View) :
         RecyclerView.ViewHolder(view) {
 
-        fun bind(info: RecipeInformation) {
+        fun bind(info: NormalRecipe) {
 
             val titleView = itemView.findViewById<TextView>(R.id.recipe_title)
             titleView.text = info.title
@@ -45,15 +51,9 @@ class RecipeAdapter(
             val imageView = itemView.findViewById<ImageView>(R.id.recipe_image)
             imageView.transitionName = "${info.title}_hero"
 
-            itemView.setOnClickListener {
-                val action =
-                    MainFragmentDirections.actionMainFragmentToRecipeDetailFragment(info)
-                itemView.findNavController().navigate(action)
-            }
-
             Picasso.with(itemView.context)
-                .load(info.image)
-                .resize(targetWidth, targetWidth / 2)
+                .load(info.imageUrl)
+                .resize(width, width / 2)
                 .into(imageView, object : Callback {
                     override fun onSuccess() {
                         itemView.setOnClickListener {

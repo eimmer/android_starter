@@ -1,8 +1,9 @@
 package com.bracket.datasharemain.data
 
-import com.bracket.datasharemain.data.entities.Recipe
+import com.bracket.datasharemain.data.model.NormalRecipe
 
 interface RecipePersistence {
-    suspend fun save(recipe: Recipe)
-    suspend fun delete(recipe: Recipe)
+    suspend fun save(recipe: NormalRecipe)
+    suspend fun delete(recipe: NormalRecipe)
+    suspend fun getAll(): List<NormalRecipe>
 }
