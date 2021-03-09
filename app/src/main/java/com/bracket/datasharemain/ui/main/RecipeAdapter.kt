@@ -5,26 +5,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
-import com.bracket.datasharemain.BuildConfig
 import com.bracket.datasharemain.R
 import com.bracket.datasharemain.data.model.NormalRecipe
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
+typealias ItemClickListener = (normalRecipe: NormalRecipe, extras: FragmentNavigator.Extras) -> Unit
+
 class RecipeAdapter(
     private val recipes: List<NormalRecipe>,
-    private val width:Int
+    private val width: Int,
+    private val itemClickListener: ItemClickListener? = null
 ) : Adapter<RecipeAdapter.RecipeViewHolder>() {
-
-    init {
-        if (BuildConfig.DEBUG && width <= 0) {
-            error("width parameter is invalid with the following value: $width")
-        }
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -56,11 +52,11 @@ class RecipeAdapter(
                 .resize(width, width / 2)
                 .into(imageView, object : Callback {
                     override fun onSuccess() {
-                        itemView.setOnClickListener {
-                            val extras = FragmentNavigatorExtras(imageView to "hero_image")
-                            val action =
-                                MainFragmentDirections.actionMainFragmentToRecipeDetailFragment(info)
-                            itemView.findNavController().navigate(action, extras)
+                        itemClickListener?.let {
+                            itemView.setOnClickListener {
+                                val extras = FragmentNavigatorExtras(imageView to "hero_image")
+                                it(info, extras)
+                            }
                         }
                     }
 

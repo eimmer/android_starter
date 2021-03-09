@@ -15,9 +15,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bracket.datasharemain.MainApplication.Companion.dataProvider
 import com.bracket.datasharemain.R
 import com.bracket.datasharemain.data.model.NormalRecipe
-import com.bracket.datasharemain.data.model.RecipeInformation
-import com.bracket.datasharemain.data.model.toNormalRecipe
-import com.bracket.datasharemain.data.model.toNormalRecipeList
 import com.bracket.datasharemain.network.CookingService
 import kotlinx.android.synthetic.main.main_fragment.*
 import javax.inject.Inject
@@ -75,7 +72,11 @@ class MainFragment : Fragment() {
 
     private fun displayRecipeList(recipes: List<NormalRecipe>) {
         loading_spinner.visibility = View.GONE
-        recipe_list.adapter = RecipeAdapter(recipes, getImageWidth(view!!))
+        recipe_list.adapter = RecipeAdapter(recipes, getImageWidth(requireView())) { info, extras ->
+            val action =
+                MainFragmentDirections.actionMainFragmentToRecipeDetailFragment(info)
+            findNavController().navigate(action, extras)
+        }
     }
 
     private fun getImageWidth(view: View): Int {
