@@ -11,6 +11,9 @@ interface RecipeDao {
     @Query("SELECT * FROM recipe")
     fun getAll(): List<Recipe>
 
+    @Query("SELECT * FROM recipe WHERE recipe.id == :id")
+    fun get(id:Int):Recipe?
+
     @Insert
     fun insert(vararg recipe: Recipe)
 

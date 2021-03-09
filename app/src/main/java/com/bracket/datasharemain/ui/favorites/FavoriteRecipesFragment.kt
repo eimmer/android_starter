@@ -6,6 +6,7 @@ import android.view.Display
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -14,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bracket.datasharemain.MainApplication
 import com.bracket.datasharemain.R
 import com.bracket.datasharemain.data.RecipePersistence
-import com.bracket.datasharemain.ui.main.MainFragmentDirections
 import com.bracket.datasharemain.ui.main.RecipeAdapter
 import kotlinx.android.synthetic.main.favorite_recipes_fragment.*
 import javax.inject.Inject
@@ -45,11 +45,17 @@ class FavoriteRecipesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        postponeEnterTransition()
+        view.doOnPreDraw { startPostponedEnterTransition() }
+
         viewModel.favoriteRecipes.observe(viewLifecycleOwner) {
             favorite_list.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-            favorite_list.adapter = RecipeAdapter(it, getImageWidth(view)){ info, extras ->
+            favorite_list.adapter = RecipeAdapter(it, getImageWidth(view)) { info, extras ->
                 val action =
-                    FavoriteRecipesFragmentDirections.actionFavoriteRecipesFragmentToRecipeDetailFragment(info)
+                    FavoriteRecipesFragmentDirections.actionFavoriteRecipesFragmentToRecipeDetailFragment(
+                        info
+                    )
                 findNavController().navigate(action, extras)
             }
         }

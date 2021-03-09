@@ -19,4 +19,9 @@ class RecipeRoomPersistence(private val recipeDao: RecipeDao) : RecipePersistenc
         return recipeDao.getAll().map { it.toNormalRecipe() }
     }
 
+    override suspend fun getRecipe(id: Int): NormalRecipe? {
+        return recipeDao.get(id)?.toNormalRecipe()
+    }
+
+
 }
