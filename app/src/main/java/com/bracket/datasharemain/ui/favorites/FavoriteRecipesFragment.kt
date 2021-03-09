@@ -1,16 +1,20 @@
 package com.bracket.datasharemain.ui.favorites
 
+import android.graphics.Point
 import android.os.Bundle
+import android.view.Display
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bracket.datasharemain.MainApplication
 import com.bracket.datasharemain.R
 import com.bracket.datasharemain.data.RecipePersistence
+import com.bracket.datasharemain.ui.main.MainFragmentDirections
 import com.bracket.datasharemain.ui.main.RecipeAdapter
 import kotlinx.android.synthetic.main.favorite_recipes_fragment.*
 import javax.inject.Inject
@@ -43,8 +47,18 @@ class FavoriteRecipesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.favoriteRecipes.observe(viewLifecycleOwner) {
             favorite_list.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-            favorite_list.adapter = RecipeAdapter(it, view.width)
+            favorite_list.adapter = RecipeAdapter(it, getImageWidth(view)){ info, extras ->
+                val action =
+                    FavoriteRecipesFragmentDirections.actionFavoriteRecipesFragmentToRecipeDetailFragment(info)
+                findNavController().navigate(action, extras)
+            }
         }
     }
 
+    private fun getImageWidth(view: View): Int {
+        val display: Display = view.display
+        val size = Point()
+        display.getSize(size)
+        return size.x
+    }
 }

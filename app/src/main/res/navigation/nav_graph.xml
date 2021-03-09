@@ -52,5 +52,14 @@
         android:id="@+id/favoriteRecipesFragment"
         android:name="com.bracket.datasharemain.ui.favorites.FavoriteRecipesFragment"
         android:label="favorite_recipes_fragment"
-        tools:layout="@layout/favorite_recipes_fragment" />
+        tools:layout="@layout/favorite_recipes_fragment" >
+        <action
+            android:id="@+id/action_favoriteRecipesFragment_to_recipeDetailFragment"
+            app:destination="@id/recipeDetailFragment"
+            app:popUpTo="@id/favoriteRecipesFragment"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@anim/fragment_fade_exit" />
+    </fragment>
 </navigation>
